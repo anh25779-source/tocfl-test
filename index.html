@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>華語練習室 | Luyện thi TOCFL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=LXGW+WenKai+TC:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#F3F7F5;--surface:#FFFFFF;--ink:#1B2A27;--muted:#586864;--line:#D3E1DB;--grid:#2A7763;--grid-soft:#D6E8E0;--seal:#B3312A;--on-grid:#FFFFFF;color-scheme:light}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#0E1615;--surface:#152120;--ink:#E4EDEA;--muted:#99AAA5;--line:#2A3C38;--grid:#62BA9F;--grid-soft:#1F3A33;--seal:#E8685D;--on-grid:#0E1615;color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#0E1615;--surface:#152120;--ink:#E4EDEA;--muted:#99AAA5;--line:#2A3C38;--grid:#62BA9F;--grid-soft:#1F3A33;--seal:#E8685D;--on-grid:#0E1615;color-scheme:dark}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.6}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+.zh{font-family:"LXGW WenKai TC","Kaiti TC","BiauKai","STKaiti","DFKai-SB",serif}
+main{max-width:760px;margin:0 auto;padding:28px 20px 72px}
+h2{font-size:26px;font-weight:600;margin:8px 0 4px;line-height:1.3}
+h3{margin:0;font-size:22px;font-weight:600;line-height:1.3}
+p{margin:0 0 12px}
+.meta{color:var(--muted);font-size:14px}
+button{font:inherit;cursor:pointer}
+button:disabled{cursor:default}
+:focus-visible{outline:3px solid var(--grid);outline-offset:2px}
+
+/* Manuscript-grid cells (田字格) */
+.cell{width:64px;aspect-ratio:1;border:1.5px solid var(--grid);display:grid;place-items:center;position:relative;background:var(--surface);font-size:38px;line-height:1;flex:none}
+.cell::before,.cell::after{content:"";position:absolute;inset:0;pointer-events:none}
+.cell::before{background:linear-gradient(var(--grid-soft),var(--grid-soft)) center/100% 1px no-repeat}
+.cell::after{background:linear-gradient(var(--grid-soft),var(--grid-soft)) center/1px 100% no-repeat}
+.cell span{position:relative;z-index:1}
+.title{display:flex;flex-wrap:wrap;margin:12px 0 18px}
+.title .cell{width:clamp(46px,14vw,88px);font-size:clamp(30px,9vw,58px);margin-left:-1.5px}
+.title .cell:first-child{margin-left:0}
+.title .cell span{animation:ink .5s ease-out both}
+@keyframes ink{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.title .cell span{animation:none}}
+.lede{font-size:18px;max-width:34em}
+
+.lv{display:grid;grid-template-columns:auto 1fr;gap:18px;padding:22px 0;border-top:1px solid var(--line)}
+.lv h3 small{display:block;font-family:"Be Vietnam Pro",system-ui,sans-serif;font-size:15px;font-weight:500;color:var(--muted);margin-top:2px}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.btn{border:1.5px solid var(--grid);background:transparent;color:var(--grid);padding:8px 15px;border-radius:6px;font-weight:500}
+.btn.primary{background:var(--grid);color:var(--on-grid)}
+.btn:disabled{opacity:.4}
+.btn.sm{padding:5px 12px;font-size:14px}
+.link{background:none;border:0;color:var(--grid);padding:0;font-weight:500;text-decoration:underline;text-underline-offset:3px}
+
+.band{margin-top:44px;padding-top:26px;border-top:3px double var(--grid)}
+.bands{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:16px 0}
+.bandbox{background:var(--surface);border:1.5px solid var(--line);border-radius:8px;padding:18px}
+.note{font-size:14px;color:var(--muted);max-width:40em}
+.settings{margin-top:40px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;font-size:14px;color:var(--muted)}
+select{font:inherit;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:6px;padding:4px 8px}
+.warn{color:var(--seal);font-size:14px}
+
+/* Flashcards */
+.card{background:var(--surface);border:1.5px solid var(--grid);min-height:270px;display:grid;place-items:center;text-align:center;padding:24px;border-radius:10px;width:100%;color:var(--ink);margin-top:14px}
+.card .big{font-size:clamp(56px,17vw,100px);line-height:1.15}
+.card .py{font-size:24px;color:var(--grid);margin-top:10px}
+.card .vi{font-size:19px;margin-top:4px}
+.card .hint{font-size:14px;color:var(--muted);margin-top:14px}
+
+/* Questions */
+.listen{display:flex;align-items:center;gap:12px;margin:16px 0 6px}
+.passage{background:var(--surface);border-left:4px solid var(--grid);padding:14px 18px;font-size:21px;line-height:1.8;margin:16px 0 8px;border-radius:0 8px 8px 0}
+.qtext{font-size:23px;margin:14px 0 4px;line-height:1.6}
+.blank{display:inline-block;width:2.4em;border-bottom:2px solid var(--ink);margin:0 .15em;transform:translateY(-.2em)}
+.opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:11px 14px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;margin-top:10px}
+.opt:disabled{opacity:1}
+.opt .key{width:34px;height:34px;flex:none;display:grid;place-items:center;border:1.5px solid var(--grid);font-weight:600;color:var(--grid);position:relative}
+.opt .txt{font-size:21px}
+.opt.sel{border-color:var(--grid);background:var(--grid-soft)}
+.opt.right .key::after{content:"";position:absolute;inset:-8px;border:2.5px solid var(--seal);border-radius:50%;transform:rotate(-10deg)}
+.opt.wrong{border-color:var(--seal)}
+.opt.wrong .txt{text-decoration:line-through;text-decoration-color:var(--seal);text-decoration-thickness:2px}
+.feedback{margin-top:16px;font-weight:500}
+.feedback.ok{color:var(--grid)}
+.feedback.no{color:var(--seal)}
+.transcript{margin-top:14px;padding:12px 16px;border:1px dashed var(--line);border-radius:8px}
+.transcript p{font-size:19px;margin:4px 0 0}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);margin-bottom:8px}
+.bar .name{flex:1;font-weight:500;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.timer{font-variant-numeric:tabular-nums;font-weight:600;font-size:18px}
+.timer.low{color:var(--seal)}
+.qnav{display:flex;flex-wrap:wrap;gap:6px;margin:22px 0 0}
+.qnav button{width:38px;height:38px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:4px;font-size:14px}
+.qnav .done{background:var(--grid-soft);border-color:var(--grid)}
+.qnav .cur{border-color:var(--ink);border-width:2px}
+.qnav .gap{width:100%;height:0}
+
+.score{display:flex;align-items:center;gap:18px;margin:18px 0}
+.score .cell{width:96px;font-size:40px}
+.verdict{font-size:20px;font-weight:600}
+details{border-top:1px solid var(--line);padding:10px 0}
+summary{cursor:pointer;font-weight:500}
+summary .bad{color:var(--seal)}
+summary .good{color:var(--grid)}
+.cell svg{position:relative;z-index:1}
+.tone{display:grid;grid-template-columns:auto 1fr;gap:16px;padding:18px 0;border-top:1px solid var(--line)}
+.tone h3 .py{font-weight:500;color:var(--grid);font-size:18px}
+.tone p{margin:6px 0 10px}
+.contour,.mini{color:var(--seal)}
+.mini{display:inline-flex}
+.tone-opt .txt{font-size:17px}
+.zgroup{padding:18px 0;border-top:1px solid var(--line)}
+.zgroup h3{font-size:19px}
+.zgroup .meta{margin:2px 0 10px}
+.zgrid{display:flex;flex-wrap:wrap;gap:8px}
+.zbtn{cursor:pointer;color:var(--ink);padding:0;font-size:inherit}
+.zbtn .sym{font-size:34px}
+.zbtn .p{position:absolute;right:4px;bottom:2px;font-size:12px;color:var(--grid);z-index:1;font-family:"Be Vietnam Pro",system-ui,sans-serif}
+.zbtn.on{background:var(--grid-soft);border-color:var(--seal)}
+.zdetail{display:flex;gap:16px;align-items:flex-start;margin-top:12px;padding:12px 14px;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+.zdetail .big{font-size:48px;line-height:1;color:var(--seal)}
+.zdetail p{margin:0 0 6px}
+.zdetail .actions{margin-top:6px}
+.zopt .txt{font-size:30px}
+.part{font-size:22px;margin:30px 0 0;color:var(--grid)}
+.zbtn.py .sym{font-family:"Be Vietnam Pro",system-ui,sans-serif;font-size:21px;font-weight:600}
+.zbtn.py .p{font-family:"LXGW WenKai TC","Kaiti TC","BiauKai",serif;font-size:11px}
+.zopt.py .txt{font-family:"Be Vietnam Pro",system-ui,sans-serif;font-size:24px;font-weight:600}
+.zdetail .big.pyb{font-size:36px;font-weight:600}
+.rules p{margin:0 0 10px}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script>
+const LV=[
+ {id:1,band:'A',cefr:'A1',zh:'入門級',vi:'Nhập môn',num:'一'},
+ {id:2,band:'A',cefr:'A2',zh:'基礎級',vi:'Cơ bản',num:'二'},
+ {id:3,band:'B',cefr:'B1',zh:'進階級',vi:'Tiến bộ',num:'三'},
+ {id:4,band:'B',cefr:'B2',zh:'高階級',vi:'Cao cấp',num:'四'}];
+
+const VOCAB={
+1:[['你好','nǐ hǎo','xin chào'],['謝謝','xièxie','cảm ơn'],['學生','xuéshēng','học sinh'],['老師','lǎoshī','giáo viên'],['朋友','péngyǒu','bạn bè'],['喝','hē','uống'],['吃飯','chīfàn','ăn cơm'],['今天','jīntiān','hôm nay'],['多少錢','duōshǎo qián','bao nhiêu tiền'],['喜歡','xǐhuān','thích'],['家','jiā','nhà, gia đình'],['貓','māo','con mèo']],
+2:[['已經','yǐjīng','đã'],['比較','bǐjiào','tương đối, so sánh'],['因為','yīnwèi','bởi vì'],['所以','suǒyǐ','cho nên'],['捷運','jiéyùn','tàu điện MRT'],['便利商店','biànlì shāngdiàn','cửa hàng tiện lợi'],['請假','qǐngjià','xin nghỉ phép'],['感冒','gǎnmào','bị cảm'],['訂位','dìngwèi','đặt chỗ'],['準備','zhǔnbèi','chuẩn bị'],['方便','fāngbiàn','thuận tiện'],['颱風','táifēng','bão']],
+3:[['經驗','jīngyàn','kinh nghiệm'],['影響','yǐngxiǎng','ảnh hưởng'],['環境','huánjìng','môi trường'],['建議','jiànyì','đề nghị, gợi ý'],['適應','shìyìng','thích nghi'],['負責','fùzé','phụ trách'],['機會','jīhuì','cơ hội'],['解決','jiějué','giải quyết'],['雖然','suīrán','mặc dù'],['壓力','yālì','áp lực'],['節省','jiéshěng','tiết kiệm'],['報名','bàomíng','đăng ký']],
+4:[['趨勢','qūshì','xu hướng'],['維持','wéichí','duy trì'],['導致','dǎozhì','dẫn đến'],['措施','cuòshī','biện pháp'],['普遍','pǔbiàn','phổ biến'],['爭議','zhēngyì','tranh cãi'],['效率','xiàolǜ','hiệu suất'],['衝擊','chōngjí','tác động mạnh'],['具備','jùbèi','có đủ'],['推動','tuīdòng','thúc đẩy'],['資源','zīyuán','tài nguyên'],['永續','yǒngxù','bền vững']]};
+
+// t: L = nghe, R = đọc. s = nội dung bài nghe, p = đoạn văn, a = chỉ số đáp án đúng
+const Q=[
+ {lv:1,t:'L',s:'你好，我叫王大明。我是學生，不是老師。',q:'王大明是做什麼的？',o:['學生','老師','醫生'],a:0},
+ {lv:1,t:'L',s:'這杯咖啡多少錢？六十五塊。',q:'咖啡多少錢？',o:['五十六塊','六十五塊','七十五塊'],a:1},
+ {lv:1,t:'L',s:'你喜歡貓嗎？我不喜歡貓，我喜歡狗。',q:'他喜歡什麼？',o:['貓','狗','魚'],a:1},
+ {lv:1,t:'L',s:'今天星期三，明天我要去看朋友。',q:'他哪天去看朋友？',o:['星期二','星期三','星期四'],a:2},
+ {lv:1,t:'L',s:'現在幾點？三點半。',q:'現在幾點？',o:['三點','三點半','四點半'],a:1},
+ {lv:1,t:'R',q:'我___咖啡，不喝茶。',o:['喝','吃','看'],a:0},
+ {lv:1,t:'R',q:'這是我的___，他叫小明。',o:['朋友','咖啡','今天'],a:0},
+ {lv:1,t:'R',p:'我叫林美美，我是越南人。我在台北學中文。我有一個哥哥，他是老師。',q:'美美的哥哥做什麼工作？',o:['老師','學生','醫生'],a:0},
+ {lv:1,t:'R',p:'營業時間：早上九點到晚上十點',q:'這家店晚上幾點關門？',o:['九點','十點','十二點'],a:1},
+ {lv:1,t:'R',q:'今天天氣很___，我們去公園吧！',o:['好','貴','多'],a:0},
+
+ {lv:2,t:'L',s:'我今天感冒了，不能去上班，想跟你請假。',q:'他為什麼不去上班？',o:['他生病了','他要去旅行','他太忙了'],a:0},
+ {lv:2,t:'L',s:'我們搭捷運去吧，比搭公車快多了。',q:'他們打算怎麼去？',o:['搭公車','搭捷運','騎機車'],a:1},
+ {lv:2,t:'L',s:'你好，我想訂位，星期六晚上七點，四個人。',q:'幾個人去吃飯？',o:['兩個人','四個人','七個人'],a:1},
+ {lv:2,t:'L',s:'颱風快來了，明天學校不上課。',q:'明天為什麼不上課？',o:['老師請假','颱風要來','學校放暑假'],a:1},
+ {lv:2,t:'L',s:'這件衣服太貴了，有沒有比較便宜的？',q:'她覺得衣服怎麼樣？',o:['太大了','太貴了','太小了'],a:1},
+ {lv:2,t:'R',q:'因為下雨，___我們不去爬山了。',o:['所以','但是','或者'],a:0},
+ {lv:2,t:'R',q:'我___吃過晚飯了，不餓。',o:['已經','還沒','正在'],a:0},
+ {lv:2,t:'R',p:'各位同事：明天的會議改到下午兩點，地點在三樓會議室，請大家準時參加。李經理',q:'會議在哪裡開？',o:['二樓','三樓會議室','經理辦公室'],a:1},
+ {lv:2,t:'R',p:'便利商店公告：本店從下週一開始，二十四小時營業。',q:'從什麼時候開始二十四小時營業？',o:['今天','下週一','下個月'],a:1},
+ {lv:2,t:'R',q:'搭捷運很___，不用擔心塞車。',o:['方便','感冒','準備'],a:0},
+
+ {lv:3,t:'L',s:'我剛來台灣的時候，很不習慣這裡的天氣，又熱又潮濕，不過現在已經適應了。',q:'他現在覺得台灣的天氣怎麼樣？',o:['還是很不習慣','已經習慣了','比以前更討厭'],a:1},
+ {lv:3,t:'L',s:'這個專案由我負責，有什麼問題可以直接找我，不用再問經理。',q:'有問題的時候應該找誰？',o:['經理','說話的人','其他同事'],a:1},
+ {lv:3,t:'L',s:'雖然這份工作的薪水不高，但是可以學到很多經驗，所以我還是決定接受。',q:'他為什麼接受這份工作？',o:['薪水很高','可以累積經驗','離家很近'],a:1},
+ {lv:3,t:'L',s:'下個月考試的報名截止日期是這個星期五，記得別錯過。',q:'什麼時候以前要報名？',o:['這個星期五','下個星期五','下個月'],a:0},
+ {lv:3,t:'L',s:'最近工作壓力很大吧？我建議你週末去爬山，放鬆一下。',q:'說話的人建議做什麼？',o:['多加班','去爬山放鬆','換工作'],a:1},
+ {lv:3,t:'R',q:'___他很忙，但是每天都抽時間運動。',o:['雖然','因為','如果'],a:0},
+ {lv:3,t:'R',q:'這個問題很難，我們需要一起想辦法___。',o:['解決','報名','適應'],a:0},
+ {lv:3,t:'R',p:'為了節省開銷，阿明每天自己帶便當上班。他發現這樣不但省錢，也吃得比較健康。',q:'阿明帶便當有什麼好處？',o:['省錢又健康','可以交朋友','比較快'],a:0},
+ {lv:3,t:'R',p:'本中心開設華語會話班，每班最多八人。報名者須先參加分級測驗，再依程度分班。',q:'報名以後要先做什麼？',o:['直接上課','參加分級測驗','繳交照片'],a:1},
+ {lv:3,t:'R',q:'搬到新城市以後，他花了半年才___當地的生活。',o:['適應','影響','負責'],a:0},
+
+ {lv:4,t:'L',s:'近年來，遠距工作逐漸成為趨勢，不少企業發現員工的效率不但沒有下降，反而提高了。',q:'遠距工作對效率有什麼影響？',o:['效率下降了','效率提高了','沒有影響'],a:1},
+ {lv:4,t:'L',s:'政府推出新的措施，鼓勵民眾減少使用塑膠袋，但是有些店家擔心會影響生意，因此引起爭議。',q:'這項措施為什麼引起爭議？',o:['民眾不想用塑膠袋','店家擔心生意受影響','政府沒有說明原因'],a:1},
+ {lv:4,t:'L',s:'這家公司之所以能維持競爭力，主要是因為長期投入資源培養人才。',q:'公司維持競爭力的主要原因是什麼？',o:['降低價格','培養人才','擴大工廠'],a:1},
+ {lv:4,t:'L',s:'少子化導致許多學校招不到學生，部分偏鄉學校甚至面臨關閉的危機。',q:'少子化造成什麼問題？',o:['老師太多','學校招生困難','學費上漲'],a:1},
+ {lv:4,t:'L',s:'應徵這個職位，除了要具備專業能力，溝通能力也同樣重要。',q:'這個職位需要什麼？',o:['只需要專業能力','專業和溝通能力都需要','只需要溝通能力'],a:1},
+ {lv:4,t:'R',q:'長時間使用手機，可能會___視力下降。',o:['導致','維持','具備'],a:0},
+ {lv:4,t:'R',q:'為了減少碳排放，政府積極___再生能源。',o:['推動','衝擊','普遍'],a:0},
+ {lv:4,t:'R',p:'隨著外送平台普及，民眾在家就能享用各種美食。然而，大量的一次性餐具也帶來環境負擔，因此有業者開始推出可重複使用的餐盒。',q:'業者推出可重複使用餐盒的原因是什麼？',o:['降低成本','減少環境負擔','吸引年輕人'],a:1},
+ {lv:4,t:'R',p:'研究指出，適度的壓力能提升專注力；但若壓力長期無法紓解，反而會對身心造成傷害。',q:'作者對壓力的看法是什麼？',o:['壓力完全有害','適度有益，過度有害','壓力與健康無關'],a:1},
+ {lv:4,t:'R',q:'永續發展的目標，是在滿足當代需求的同時，不犧牲下一代的___。',o:['資源','措施','效率'],a:0},
+
+ {lv:1,t:'L',s:'我家有四個人：爸爸、媽媽、姐姐和我。',q:'他家有幾個人？',o:['三個人','四個人','五個人'],a:1},
+ {lv:1,t:'L',s:'我早上喝茶，晚上不喝茶，喝水。',q:'他晚上喝什麼？',o:['茶','咖啡','水'],a:2},
+ {lv:1,t:'L',s:'你要去哪裡？我要去學校上課。',q:'他要去哪裡？',o:['學校','商店','醫院'],a:0},
+ {lv:1,t:'L',s:'這本書是誰的？是老師的。',q:'這本書是誰的？',o:['學生的','老師的','朋友的'],a:1},
+ {lv:1,t:'L',s:'我今年二十歲，我妹妹十八歲。',q:'妹妹幾歲？',o:['十八歲','二十歲','二十八歲'],a:0},
+ {lv:1,t:'R',q:'我___台灣人，我是越南人。',o:['不是','沒有','不要'],a:0},
+ {lv:1,t:'R',q:'你___什麼名字？',o:['叫','是','有'],a:0},
+ {lv:1,t:'R',p:'菜單：牛肉麵 一百二十元，水餃 八十元，紅茶 三十元',q:'水餃多少錢？',o:['三十元','八十元','一百二十元'],a:1},
+ {lv:1,t:'R',p:'小明星期一到星期五上課，星期六去打工，星期天在家休息。',q:'小明星期六做什麼？',o:['上課','打工','休息'],a:1},
+ {lv:1,t:'R',q:'我肚子餓了，想___東西。',o:['吃','睡','聽'],a:0},
+
+ {lv:2,t:'L',s:'我本來想坐計程車，可是太貴了，所以騎腳踏車去。',q:'他最後怎麼去？',o:['坐計程車','騎腳踏車','走路'],a:1},
+ {lv:2,t:'L',s:'圖書館星期一休息，其他時間早上八點開門。',q:'圖書館哪天不開？',o:['星期一','星期六','星期天'],a:0},
+ {lv:2,t:'L',s:'你可以幫我去便利商店買一瓶牛奶嗎？我等一下要做蛋糕。',q:'她為什麼要牛奶？',o:['要喝','要做蛋糕','要送朋友'],a:1},
+ {lv:2,t:'L',s:'我們七點在捷運站門口見面，別遲到喔。',q:'他們在哪裡見面？',o:['公車站','捷運站門口','餐廳裡'],a:1},
+ {lv:2,t:'L',s:'醫生說我要多喝水，多休息，三天以後再來看。',q:'他什麼時候要再去看醫生？',o:['明天','三天以後','一個星期以後'],a:1},
+ {lv:2,t:'R',q:'我___去過日本，還想再去一次。',o:['已經','還沒','正在'],a:0},
+ {lv:2,t:'R',q:'外面在下雨，你出門的時候別忘了帶___。',o:['雨傘','書包','手錶'],a:0},
+ {lv:2,t:'R',p:'王老師：我今天發燒，不能去上課，想請一天假。明天會把作業交給您。學生 陳小華',q:'陳小華為什麼請假？',o:['要去旅行','生病了','家裡有事'],a:1},
+ {lv:2,t:'R',p:'夏季特價：所有飲料買一送一，活動只到八月三十一日。',q:'這個活動什麼時候結束？',o:['七月三十一日','八月一日','八月三十一日'],a:2},
+ {lv:2,t:'R',q:'這家餐廳的菜___好吃___便宜，所以客人很多。',o:['又…又…','因為…所以…','雖然…但是…'],a:0},
+
+ {lv:3,t:'L',s:'這次的報告我們分成三個部分，我負責市場調查，小李負責資料分析。',q:'小李負責什麼？',o:['市場調查','資料分析','寫結論'],a:1},
+ {lv:3,t:'L',s:'與其每天花兩個小時塞車，不如搬到公司附近住。',q:'說話的人有什麼想法？',o:['繼續開車上班','搬到公司附近','換一份工作'],a:1},
+ {lv:3,t:'L',s:'這家餐廳的環境不錯，服務也很好，只是價錢稍微貴了一點。',q:'這家餐廳有什麼缺點？',o:['環境不好','服務很差','價錢有點貴'],a:2},
+ {lv:3,t:'L',s:'他平常很少生氣，今天會這麼不高興，一定是遇到了什麼麻煩。',q:'說話的人認為他怎麼了？',o:['他常常生氣','他可能遇到麻煩','他身體不舒服'],a:1},
+ {lv:3,t:'L',s:'如果明天下大雨，運動會就改到下星期舉行。',q:'下大雨的話，運動會怎麼辦？',o:['照常舉行','改到下星期','取消'],a:1},
+ {lv:3,t:'R',q:'只要你努力練習，___能通過考試。',o:['就','才','還'],a:0},
+ {lv:3,t:'R',q:'這次失敗給了我很好的___，下次我會做得更好。',o:['經驗','環境','壓力'],a:0},
+ {lv:3,t:'R',p:'公司規定：員工請假須於三天前提出申請，臨時請病假者，須於當天上午十點前通知主管。',q:'臨時請病假應該怎麼做？',o:['三天前申請','當天十點前通知主管','直接不來上班'],a:1},
+ {lv:3,t:'R',p:'很多人以為多喝咖啡可以提神，但是喝太多反而會影響睡眠，讓第二天更累。',q:'這段話主要在說什麼？',o:['咖啡完全不能喝','咖啡喝太多會影響睡眠','咖啡可以治療失眠'],a:1},
+ {lv:3,t:'R',q:'他對這份工作很有興趣，___薪水不高也願意做。',o:['即使','因為','所以'],a:0},
+
+ {lv:4,t:'L',s:'雖然網路購物十分便利，但是退貨流程繁瑣，仍有不少消費者偏好到實體店面購買。',q:'有些人為什麼偏好實體店面？',o:['價格比較便宜','網路購物退貨麻煩','實體店面商品比較多'],a:1},
+ {lv:4,t:'L',s:'這項研究的樣本數太少，因此結論是否具有代表性，還有待進一步驗證。',q:'說話的人對這項研究有什麼看法？',o:['結論完全正確','結論還需要驗證','樣本數已經足夠'],a:1},
+ {lv:4,t:'L',s:'與其一味地追求經濟成長，政府更應該重視貧富差距的問題。',q:'說話的人認為政府應該重視什麼？',o:['經濟成長','貧富差距','出口貿易'],a:1},
+ {lv:4,t:'L',s:'高齡化社會來臨，長期照顧的需求大幅增加，照顧人力卻嚴重不足。',q:'高齡化社會面臨什麼問題？',o:['照顧人力不足','年輕人太多','醫院太多'],a:0},
+ {lv:4,t:'L',s:'該公司宣布，受到原物料價格上漲的衝擊，下個月起產品將全面調漲百分之五。',q:'產品為什麼要漲價？',o:['人事成本增加','原物料價格上漲','市場需求太大'],a:1},
+ {lv:4,t:'R',q:'面對激烈的市場競爭，企業必須不斷創新，___會被淘汰。',o:['否則','因此','甚至'],a:0},
+ {lv:4,t:'R',q:'這項政策實施以後，___了不少民眾的反對。',o:['引起','具備','節省'],a:0},
+ {lv:4,t:'R',p:'根據調查，超過六成的上班族每天使用手機的時間超過五小時，其中以社群媒體占最大比例。專家提醒，過度依賴手機可能影響人際互動與睡眠品質。',q:'根據調查，上班族用手機主要做什麼？',o:['看新聞','使用社群媒體','玩遊戲'],a:1},
+ {lv:4,t:'R',p:'這座城市近年積極推動公共自行車系統，不僅減少了交通壅塞，也降低了空氣污染，成為其他城市仿效的對象。',q:'下列哪一項不是公共自行車系統帶來的好處？',o:['減少交通壅塞','降低空氣污染','增加停車位'],a:2},
+ {lv:4,t:'R',q:'他的提案雖然有創意，___缺乏可行性，最後沒有被採用。',o:['卻','並','才'],a:0}
+];
+// Số câu rút ngẫu nhiên cho mỗi phần (Nghe / Đọc) của mỗi Level trong một lượt thi hoặc luyện tập
+const PER=5;
+
+/* Storage */
+function load(){try{const d=JSON.parse(localStorage.getItem('tocfl-v1'));return d&&typeof d==='object'?d:{}}catch(e){return {}}}
+let DB=load();DB.known=DB.known||{};DB.best=DB.best||{};
+function save(){try{localStorage.setItem('tocfl-v1',JSON.stringify(DB))}catch(e){}}
+
+/* Speech */
+const hasTTS='speechSynthesis' in window;
+let voice=null,rate=DB.rate||0.85;
+function pickVoice(){if(!hasTTS)return;const vs=speechSynthesis.getVoices();voice=vs.find(v=>/zh[-_]TW/i.test(v.lang))||vs.find(v=>/zh[-_](CN|Hans)/i.test(v.lang))||vs.find(v=>/^zh|cmn/i.test(v.lang))||null;const n=document.getElementById('ttsnote');if(n)n.innerHTML=ttsNote()}
+if(hasTTS){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
+function ttsNote(){if(!hasTTS)return 'Trình duyệt này không hỗ trợ đọc to. Hãy dùng Chrome, Edge hoặc Safari để làm phần Nghe.';const vs=speechSynthesis.getVoices();if(vs.length&&!voice)return 'Máy chưa có giọng đọc tiếng Trung. Hãy cài giọng tiếng Trung (Đài Loan) trong cài đặt ngôn ngữ của hệ điều hành.';return ''}
+function stop(){if(hasTTS)speechSynthesis.cancel()}
+function speakSeq(parts){if(!hasTTS)return;stop();parts.forEach(t=>{const u=new SpeechSynthesisUtterance(t);u.lang='zh-TW';if(voice)u.voice=voice;u.rate=rate;speechSynthesis.speak(u)})}
+
+/* Helpers */
+const app=document.getElementById('app');
+let S={};
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function prep(qs){return qs.map(q=>({...q,ord:shuffle([...q.o.keys()]),ans:null,plays:0}))}
+function fmt(s){s=Math.max(0,s);return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
+function blank(t){return t.replace(/___/g,'<span class="blank"></span>')}
+function back(){return '<button class="link" onclick="go(\'home\')">Về trang chính</button>'}
+function go(view,arg){stop();try{window._rec&&window._rec.abort()}catch(e){}clearInterval(S.timer);VIEWS[view](arg);window.scrollTo(0,0)}
+
+/* Home */
+function home(){
+ S={};
+ const title='華語能力練習'.split('').map((c,i)=>`<div class="cell zh"><span style="animation-delay:${i*90}ms">${c}</span></div>`).join('');
+ const rows=LV.map(l=>{const v=VOCAB[l.id];const k=v.filter(w=>DB.known[w[0]]).length;const b=DB.best['L'+l.id];
+  return `<article class="lv"><div class="cell zh"><span>${l.num}</span></div><div>
+   <h3><span class="zh">${l.zh}</span><small>Level ${l.id}, ${l.vi} (${l.cefr}, Band ${l.band})</small></h3>
+   <p class="meta" style="margin-top:6px">Đã thuộc ${k}/${v.length} từ${b!=null?`. Thi mẫu cao nhất ${b}%`:''}</p>
+   <div class="actions"><button class="btn" onclick="go('flash',${l.id})">Học từ vựng</button><button class="btn" onclick="go('practice',${l.id})">Luyện tập</button><button class="btn primary" onclick="go('test','${l.id}')">Thi mẫu Level ${l.id}</button></div>
+  </div></article>`}).join('');
+ const band=(k,lo,hi)=>{const b=DB.best[k];return `<div class="bandbox"><h3>Band ${k}</h3><p class="meta">Level ${lo} và ${hi}. 20 câu, 25 phút${b!=null?`. Cao nhất ${b}%`:''}</p><button class="btn primary" onclick="go('test','${k}')">Bắt đầu thi Band ${k}</button></div>`};
+ app.innerHTML=`
+  <div class="title" aria-label="華語能力練習">${title}</div>
+  <p class="lede">Luyện tiếng Trung phồn thể theo chuẩn TOCFL. Chọn trình độ để học từ vựng, luyện tập có giải đáp ngay, hoặc làm bài thi mẫu có tính giờ.</p>
+  <section>${rows}</section>
+  <section class="band">
+   <h2>Phát âm</h2>
+   <p>Học pinyin trước, sau đó là 4 thanh điệu, bảng chú âm <span class="zh">ㄅㄆㄇㄈ</span>, luyện nghe phân biệt thanh và luyện nói có máy nhận giọng.</p>
+   <div class="actions"><button class="btn primary" onclick="go('pinyin')">Học pinyin</button><button class="btn" onclick="go('pron')">Thanh điệu, chú âm và luyện nói</button></div>
+  </section>
+  <section class="band">
+   <h2>Thi thử theo Band</h2>
+   <p>Làm như bài thi thật: mỗi lần thi, đề được rút ngẫu nhiên từ ngân hàng ${Q.length} câu hỏi nên gần như không lần nào giống lần nào. Phần Nghe trước, phần Đọc sau, câu dễ trước câu khó. Mỗi bài nghe được phát tối đa 2 lần. Kết thúc sẽ có ước tính Level.</p>
+   <div class="bands">${band('A',1,2)}${band('B',3,4)}</div>
+   <p class="note">Bài thi TOCFL thật mỗi Band có 50 câu Nghe và 50 câu Đọc, mỗi phần khoảng 60 phút. Bài thi thử ở đây rút gọn để luyện nhanh, kết quả chỉ mang tính tham khảo.</p>
+  </section>
+  <div class="settings"><label>Tốc độ đọc <select onchange="rate=+this.value;DB.rate=rate;save()">
+   <option value="0.7" ${rate==0.7?'selected':''}>Chậm</option><option value="0.85" ${rate==0.85?'selected':''}>Vừa</option><option value="1" ${rate==1?'selected':''}>Bình thường</option></select></label>
+   <button class="link" onclick="F.reset()">Xóa tiến độ đã lưu</button></div>
+  <p id="ttsnote" class="warn">${ttsNote()}</p>`;
+}
+
+/* Flashcards */
+function flash(lv){S={lv:+lv,words:[...VOCAB[lv]],i:0,flip:false};renderFlash()}
+function renderFlash(){const {words,i,flip,lv}=S;const w=words[i];const known=!!DB.known[w[0]];
+ app.innerHTML=`${back()}<h2>Từ vựng <span class="zh">${LV[lv-1].zh}</span></h2>
+ <p class="meta">Thẻ ${i+1}/${words.length}. Đã thuộc ${words.filter(x=>DB.known[x[0]]).length} từ.</p>
+ <button class="card" onclick="F.flip()" aria-label="Lật thẻ"><div><div class="big zh">${w[0]}</div>
+  ${flip?`<div class="py">${w[1]}</div><div class="vi">${w[2]}</div>`:'<div class="hint">Bấm để xem phiên âm và nghĩa</div>'}</div></button>
+ <div class="actions"><button class="btn" onclick="F.fmove(-1)" ${i==0?'disabled':''}>Thẻ trước</button>
+  <button class="btn" onclick="speakSeq(['${w[0]}'])">Nghe phát âm</button>
+  <button class="btn ${known?'primary':''}" onclick="F.know()">${known?'Đã thuộc':'Đánh dấu đã thuộc'}</button>
+  <button class="btn" onclick="F.fmove(1)">${i==words.length-1?'Về thẻ đầu':'Thẻ sau'}</button>
+  <button class="btn" onclick="F.fshuf()">Trộn thẻ</button></div>`}
+
+/* Question renderer */
+function qBody(q,k,showRes,limit){
+ let head='';
+ if(q.t==='L'){const left=limit?limit-q.plays:0;
+  head=`<div class="listen"><button class="btn primary" onclick="F.play(${k})" ${limit&&left<=0?'disabled':''}>${q.plays?'Nghe lại':'Nghe bài'}</button>${limit?`<span class="meta">Còn ${left} lượt nghe</span>`:''}</div>`}
+ else if(q.p) head=`<div class="passage zh">${q.p}</div>`;
+ const opts=q.ord.map((oi,n)=>{let c='opt';if(q.ans===oi)c+=' sel';if(showRes){if(oi===q.a)c+=' right';else if(q.ans===oi)c+=' wrong'}
+  return `<button class="${c}" onclick="F.pick(${oi})" ${showRes?'disabled':''}><span class="key">${'ABCD'[n]}</span><span class="txt zh">${q.o[oi]}</span></button>`}).join('');
+ const tr=showRes&&q.t==='L'?`<div class="transcript"><span class="meta">Nội dung bài nghe</span><p class="zh">${q.s}</p></div>`:'';
+ return `${head}<p class="qtext zh">${blank(q.q)}</p><div>${opts}</div>${tr}`}
+
+/* Practice */
+function practice(lv){lv=+lv;const L=prep(shuffle(Q.filter(q=>q.lv===lv&&q.t==='L')).slice(0,PER)),R=prep(shuffle(Q.filter(q=>q.lv===lv&&q.t==='R')).slice(0,PER));
+ S={mode:'practice',lv,qs:[...L,...R],i:0,score:0};renderPQ()}
+function renderPQ(){const q=S.qs[S.i];const done=q.ans!==null;
+ if(S.i>=S.qs.length)return;
+ app.innerHTML=`${back()}<h2>Luyện tập <span class="zh">${LV[S.lv-1].zh}</span></h2>
+ <p class="meta">Câu ${S.i+1}/${S.qs.length}, phần ${q.t==='L'?'Nghe':'Đọc'}. Đúng ${S.score} câu.</p>
+ ${qBody(q,S.i,done,0)}
+ ${done?`<p class="feedback ${q.ans===q.a?'ok':'no'}">${q.ans===q.a?'Chính xác.':'Chưa đúng. Đáp án đúng là <span class="zh">'+q.o[q.a]+'</span>.'}</p>
+ <div class="actions"><button class="btn primary" onclick="F.pnext()">${S.i<S.qs.length-1?'Câu tiếp theo':'Xem kết quả'}</button></div>`:''}`}
+function pdone(){app.innerHTML=`${back()}<h2>Hoàn thành luyện tập <span class="zh">${LV[S.lv-1].zh}</span></h2>
+ <div class="score"><div class="cell zh"><span>${S.score}</span></div><p class="verdict">Đúng ${S.score}/${S.qs.length} câu</p></div>
+ <div class="actions"><button class="btn" onclick="go('practice',${S.lv})">Luyện lại</button><button class="btn primary" onclick="go('test','${S.lv}')">Làm bài thi mẫu</button></div>`}
+
+/* Test */
+function test(key){key=String(key);const lvs=/\d/.test(key)?[+key]:(key==='A'?[1,2]:[3,4]);
+ const pick=t=>prep(lvs.flatMap(l=>shuffle(Q.filter(q=>q.lv===l&&q.t===t)).slice(0,PER)));
+ const name=lvs.length===1?`Thi mẫu Level ${lvs[0]} ${LV[lvs[0]-1].zh}`:`Thi thử Band ${key}`;
+ S={mode:'test',key,lvs,name,qs:[...pick('L'),...pick('R')],i:0,secs:lvs.length===1?12*60:25*60,warn:false};
+ S.timer=setInterval(tick,1000);renderTQ()}
+function tick(){S.secs--;const t=document.getElementById('timer');if(t){t.textContent=fmt(S.secs);t.classList.toggle('low',S.secs<=60)}if(S.secs<=0)F.submit(true)}
+function renderTQ(){const q=S.qs[S.i];const answered=S.qs.filter(x=>x.ans!==null).length;const nL=S.qs.filter(x=>x.t==='L').length;
+ const nav=S.qs.map((x,k)=>(k===nL?'<span class="gap"></span>':'')+`<button class="${x.ans!==null?'done':''} ${k===S.i?'cur':''}" onclick="F.jump(${k})" aria-label="Câu ${k+1}">${k+1}</button>`).join('');
+ const left=S.qs.length-answered;
+ app.innerHTML=`<div class="bar"><span class="name">${S.name}</span><span id="timer" class="timer ${S.secs<=60?'low':''}">${fmt(S.secs)}</span><button class="btn primary sm" onclick="F.submit()">Nộp bài</button></div>
+ ${S.warn&&left?`<p class="warn">Còn ${left} câu chưa làm. Bấm Nộp bài lần nữa nếu vẫn muốn nộp.</p>`:''}
+ <p class="meta">Phần ${q.t==='L'?'Nghe':'Đọc'}, câu ${S.i+1}/${S.qs.length}. Đã làm ${answered} câu.</p>
+ ${qBody(q,S.i,false,2)}
+ <div class="actions"><button class="btn" onclick="F.jump(${S.i-1})" ${S.i===0?'disabled':''}>Câu trước</button><button class="btn" onclick="F.jump(${S.i+1})" ${S.i===S.qs.length-1?'disabled':''}>Câu sau</button></div>
+ <div class="qnav" aria-label="Danh sách câu hỏi">${nav}</div>`}
+function result(){const qs=S.qs;const sc=a=>a.filter(q=>q.ans===q.a).length;
+ const L=qs.filter(q=>q.t==='L'),R=qs.filter(q=>q.t==='R');const tot=sc(qs),pct=Math.round(tot/qs.length*100);
+ let verdict;
+ if(S.lvs.length===1)verdict=pct>=70?`Đạt mức Level ${S.lvs[0]} ${LV[S.lvs[0]-1].zh}`:`Chưa đạt Level ${S.lvs[0]}, cần luyện thêm`;
+ else{const lo=qs.filter(q=>q.lv===S.lvs[0]),hi=qs.filter(q=>q.lv===S.lvs[1]);const pl=sc(lo)/lo.length,ph=sc(hi)/hi.length;
+  verdict=(pct>=75&&ph>=0.6)?`Ước tính đạt Level ${S.lvs[1]} ${LV[S.lvs[1]-1].zh}`:(pl>=0.6?`Ước tính đạt Level ${S.lvs[0]} ${LV[S.lvs[0]-1].zh}`:`Chưa đạt Level ${S.lvs[0]}, cần luyện thêm`)}
+ const key=S.lvs.length===1?'L'+S.lvs[0]:S.key;DB.best[key]=Math.max(DB.best[key]||0,pct);save();
+ S.mode='review';
+ const rev=qs.map((q,k)=>`<details><summary>Câu ${k+1} (${q.t==='L'?'Nghe':'Đọc'}): ${q.ans===q.a?'<span class="good">đúng</span>':q.ans===null?'<span class="bad">bỏ trống</span>':'<span class="bad">sai</span>'}</summary>${qBody(q,k,true,0)}</details>`).join('');
+ app.innerHTML=`${back()}<h2>Kết quả: ${S.name}</h2>
+ <div class="score"><div class="cell zh"><span>${pct}</span></div><div><p class="verdict">${verdict}</p><p class="meta">Tổng ${tot}/${qs.length} câu. Nghe ${sc(L)}/${L.length}, Đọc ${sc(R)}/${R.length}.</p></div></div>
+ <div class="actions"><button class="btn primary" onclick="go('test','${S.key}')">Thi lại</button>${S.lvs.map(l=>`<button class="btn" onclick="go('flash',${l})">Ôn từ vựng Level ${l}</button>`).join('')}</div>
+ <h3 style="margin-top:32px;font-size:19px">Xem lại từng câu</h3><p class="meta">Vòng đỏ là đáp án đúng. Bài nghe có kèm nội dung để đối chiếu.</p>${rev}`}
+
+/* Pronunciation */
+const TONES=[
+ {name:'Thanh 1',desc:'Cao và bằng, giữ giọng ở mức cao từ đầu đến cuối.',vi:'Gần thanh ngang nhưng cao hơn.',pts:'10,10 54,10'},
+ {name:'Thanh 2',desc:'Đi lên từ giữa lên cao, giống khi hỏi lại “hả?”.',vi:'Gần thanh sắc.',pts:'10,34 54,10'},
+ {name:'Thanh 3',desc:'Xuống thấp rồi hơi lên lại. Khi nói nhanh thường chỉ đọc nửa đầu, hạ giọng xuống thấp.',vi:'Gần thanh hỏi.',pts:'10,38 30,54 54,22'},
+ {name:'Thanh 4',desc:'Bắt đầu cao, rơi nhanh và dứt khoát xuống thấp.',vi:'Như thanh huyền nhưng rơi mạnh và ngắn, giống giọng ra lệnh.',pts:'10,10 54,54'}];
+const MARK=['','ˊ','ˇ','ˋ'];
+const SYL=[
+ {ch:'媽麻馬罵',py:['mā','má','mǎ','mà'],zy:'ㄇㄚ',vi:['mẹ','cây gai; tê','con ngựa','mắng']},
+ {ch:'八拔把爸',py:['bā','bá','bǎ','bà'],zy:'ㄅㄚ',vi:['số tám','nhổ','cầm, nắm','bố']},
+ {ch:'衣姨椅意',py:['yī','yí','yǐ','yì'],zy:'ㄧ',vi:['áo','dì','ghế','ý']},
+ {ch:'湯糖躺燙',py:['tāng','táng','tǎng','tàng'],zy:'ㄊㄤ',vi:['canh','đường','nằm','nóng bỏng']},
+ {ch:'詩十使是',py:['shī','shí','shǐ','shì'],zy:'ㄕ',vi:['thơ','số mười','khiến','là']},
+ {ch:'屋無五霧',py:['wū','wú','wǔ','wù'],zy:'ㄨ',vi:['nhà','không có','số năm','sương mù']},
+ {ch:'通同統痛',py:['tōng','tóng','tǒng','tòng'],zy:'ㄊㄨㄥ',vi:['thông','cùng','thống nhất','đau']},
+ {ch:'翻煩反飯',py:['fān','fán','fǎn','fàn'],zy:'ㄈㄢ',vi:['lật','phiền','ngược','cơm']},
+ {ch:'七騎起氣',py:['qī','qí','qǐ','qì'],zy:'ㄑㄧ',vi:['số bảy','cưỡi','dậy','khí; giận']},
+ {ch:'接節姐借',py:['jiē','jié','jiě','jiè'],zy:'ㄐㄧㄝ',vi:['đón','lễ, tiết','chị','mượn']},
+ {ch:'香詳想像',py:['xiāng','xiáng','xiǎng','xiàng'],zy:'ㄒㄧㄤ',vi:['thơm','tường tận','nghĩ, nhớ','giống']}];
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+function contour(pts,size){return `<svg viewBox="0 0 64 64" width="${size}" height="${size}" aria-hidden="true"><polyline points="${pts}" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>`}
+function backPron(){return '<button class="link" onclick="go(\'pron\')">Về phần Phát âm</button>'}
+function pron(){S={mode:'pron'};const ex=SYL[0];
+ const rows=TONES.map((t,i)=>`<div class="tone"><div class="cell contour">${contour(t.pts,52)}</div><div><h3>${t.name} <span class="zh">${ex.ch[i]}</span> <span class="py">${ex.py[i]}</span></h3><p>${t.desc} ${t.vi}</p><button class="btn sm" onclick="speakSeq(['${ex.ch[i]}'])">Nghe chữ ${ex.ch[i]}</button></div></div>`).join('');
+ const lvBtns=LV.map(l=>`<button class="btn" onclick="go('speak',${l.id})">Level ${l.id}</button>`).join('');
+ app.innerHTML=`${back()}<h2>Phát âm</h2><p class="lede">Lộ trình gợi ý: học pinyin trước, tiếp theo là thanh điệu, sau đó làm quen chú âm (ký hiệu dùng ở Đài Loan) và luyện nói.</p><div class="actions"><button class="btn primary" onclick="go('pinyin')">Bảng pinyin</button><button class="btn" onclick="go('pquiz')">Luyện nghe pinyin</button></div>
+ <h3 style="margin-top:28px">Bốn thanh điệu</h3><p>Tiếng Trung có 4 thanh điệu và một thanh nhẹ. Cùng một âm, đổi thanh là đổi nghĩa.</p>${rows}
+ <div class="actions"><button class="btn" onclick="speakSeq(['${ex.ch.split('').join('，')}'])">Nghe liền 4 thanh</button></div>
+ <p class="note" style="margin-top:16px">Biến điệu cần nhớ: hai thanh 3 đi liền nhau thì thanh 3 đầu đọc thành thanh 2, ví dụ 你好 nǐ hǎo đọc là ní hǎo.</p>
+ <section class="band"><h2>Luyện nghe thanh điệu</h2><p>Nghe một chữ và chọn đúng thanh. Mỗi lượt 10 câu, rút ngẫu nhiên.</p><button class="btn primary" onclick="go('tone')">Bắt đầu luyện nghe</button></section>
+ <section class="band"><h2>Bảng chú âm <span class="zh">注音</span></h2><p>Sau khi nắm pinyin, làm quen với 37 ký hiệu chú âm <span class="zh">ㄅㄆㄇㄈ</span> mà sách và trường học ở Đài Loan hay dùng.</p><div class="actions"><button class="btn primary" onclick="go('zhuyin')">Bảng chú âm</button><button class="btn" onclick="go('zquiz')">Luyện nhận diện chú âm</button></div></section>
+ <section class="band"><h2>Luyện nói</h2><p>Nghe mẫu, bấm Nói rồi đọc to từ vựng. Máy sẽ cho biết đã nghe ra chữ gì. Chọn Level:</p><div class="actions">${lvBtns}</div>
+ ${SR?'':'<p class="warn" style="margin-top:12px">Trình duyệt này không hỗ trợ nhận giọng nói. Hãy mở bằng Chrome hoặc Edge.</p>'}</section>`}
+function tone(){const qs=[];for(let k=0;k<10;k++)qs.push({s:SYL[Math.floor(Math.random()*SYL.length)],t:Math.floor(Math.random()*4),ans:null});S={mode:'tone',qs,i:0,score:0};renderTone()}
+function renderTone(){const q=S.qs[S.i];const done=q.ans!==null;const ch=q.s.ch[q.t];
+ const opts=TONES.map((t,i)=>{let c='opt tone-opt';if(done){if(i===q.t)c+=' right';else if(q.ans===i)c+=' wrong'}return `<button class="${c}" onclick="toneAns(${i})" ${done?'disabled':''}><span class="key">${i+1}</span><span class="mini">${contour(t.pts,28)}</span><span class="txt">${t.name}</span></button>`}).join('');
+ app.innerHTML=`${backPron()}<h2>Luyện nghe thanh điệu</h2><p class="meta">Câu ${S.i+1}/10. Đúng ${S.score} câu.</p>
+ <div class="listen"><button class="btn primary" onclick="speakSeq(['${ch}'])">Nghe</button><span class="meta">Nghe bao nhiêu lần cũng được</span></div>
+ ${done?`<p class="qtext"><span class="zh">${ch}</span> ${q.s.py[q.t]} <span class="zh">${q.s.zy}${MARK[q.t]}</span>, nghĩa: ${q.s.vi[q.t]}</p>`:'<p class="qtext">Chữ vừa nghe là thanh mấy?</p>'}
+ <div>${opts}</div>
+ ${done?`<p class="feedback ${q.ans===q.t?'ok':'no'}">${q.ans===q.t?'Chính xác.':'Chưa đúng, đây là '+TONES[q.t].name+'.'}</p><div class="actions"><button class="btn" onclick="speakSeq(['${q.s.ch.split('').join('，')}'])">Nghe so sánh 4 thanh <span class="zh">${q.s.ch}</span></button><button class="btn primary" onclick="toneNext()">${S.i<9?'Câu tiếp theo':'Xem kết quả'}</button></div>`:''}`}
+function toneAns(i){const q=S.qs[S.i];if(q.ans!==null)return;q.ans=i;if(i===q.t)S.score++;renderTone()}
+function toneNext(){stop();if(S.i<9){S.i++;renderTone();const q=S.qs[S.i];speakSeq([q.s.ch[q.t]])}
+ else app.innerHTML=`${backPron()}<h2>Kết quả luyện thanh điệu</h2><div class="score"><div class="cell zh"><span>${S.score}</span></div><p class="verdict">Đúng ${S.score}/10 câu</p></div><div class="actions"><button class="btn primary" onclick="go('tone')">Luyện lượt mới</button><button class="btn" onclick="go('pron')">Về phần Phát âm</button></div>`}
+function speak(lv){S={mode:'speak',lv:+lv,words:shuffle([...VOCAB[lv]]),i:0,msg:'',state:''};renderSpeak()}
+function renderSpeak(){const w=S.words[S.i];
+ app.innerHTML=`${backPron()}<h2>Luyện nói <span class="zh">${LV[S.lv-1].zh}</span></h2><p class="meta">Từ ${S.i+1}/${S.words.length}</p>
+ <div class="card"><div><div class="big zh">${w[0]}</div><div class="py">${w[1]}</div><div class="vi">${w[2]}</div></div></div>
+ <div class="actions"><button class="btn" onclick="speakSeq(['${w[0]}'])">Nghe mẫu</button><button class="btn primary" onclick="rec()" ${S.state==='listening'||!SR?'disabled':''}>${S.state==='listening'?'Đang nghe…':'Nói'}</button><button class="btn" onclick="nextWord()">Từ tiếp theo</button></div>
+ <p class="feedback ${S.state}" aria-live="polite">${S.msg}</p>
+ ${SR?'':'<p class="warn">Trình duyệt này không hỗ trợ nhận giọng nói. Hãy mở bằng Chrome hoặc Edge.</p>'}`}
+function nextWord(){try{window._rec&&window._rec.abort()}catch(e){}S.i=(S.i+1)%S.words.length;S.msg='';S.state='';renderSpeak()}
+function rec(){if(!SR)return;stop();const w=S.words[S.i][0];let r;
+ try{r=new SR()}catch(e){S.state='no';S.msg='Không mở được chức năng nhận giọng nói.';renderSpeak();return}
+ window._rec=r;r.lang='zh-TW';r.interimResults=false;r.maxAlternatives=5;let got=false;
+ S.state='listening';S.msg='Hãy đọc to từ trên thẻ.';renderSpeak();
+ r.onresult=e=>{got=true;const alts=[...e.results[0]].map(a=>a.transcript.replace(/[\s。，、！？.,!?]/g,''));const ok=alts.some(a=>a.includes(w));const heard=alts[0]||'';const same=[...w].filter(c=>heard.includes(c)).length;
+  S.state=ok?'ok':'no';S.msg=ok?`Chuẩn rồi. Máy nghe được: <span class="zh">${heard}</span>`:(heard?`Máy nghe được: <span class="zh">${heard}</span>. Khớp ${same}/${[...w].length} chữ, hãy nghe mẫu và thử lại.`:'Chưa nghe rõ, hãy thử lại.');renderSpeak()};
+ r.onerror=e=>{got=true;S.state='no';S.msg=(e.error==='not-allowed'||e.error==='service-not-allowed')?'Trình duyệt đang chặn micro. Hãy cho phép dùng micro rồi thử lại.':e.error==='no-speech'?'Không nghe thấy tiếng, hãy nói to và gần micro hơn.':e.error==='aborted'?'':'Không nhận được giọng nói. Phần này cần có kết nối mạng.';renderSpeak()};
+ r.onend=()=>{if(!got&&S.mode==='speak'){S.state='';S.msg='Chưa nghe thấy gì, hãy thử lại.';renderSpeak()}};
+ try{r.start()}catch(e){S.state='no';S.msg='Không mở được micro.';renderSpeak()}}
+
+/* Zhuyin table: [ký hiệu, pinyin, chữ đọc âm, ví dụ, pinyin ví dụ, nghĩa, mẹo phát âm] */
+const ZY=[
+ {g:'Âm môi',note:'Hai môi (hoặc môi và răng) tạo âm.',items:[
+  ['ㄅ','b','玻','爸爸','bàba','bố','Không bật hơi, gần âm “p” nhẹ, dây thanh không rung như “b” tiếng Việt.'],
+  ['ㄆ','p','坡','朋友','péngyǒu','bạn bè','Bật hơi mạnh. Đặt tờ giấy trước miệng, giấy phải rung.'],
+  ['ㄇ','m','摸','媽媽','māma','mẹ','Như “m” tiếng Việt.'],
+  ['ㄈ','f','佛','飯','fàn','cơm','Như “ph” tiếng Việt.']]},
+ {g:'Âm đầu lưỡi',note:'Đầu lưỡi chạm lợi trên.',items:[
+  ['ㄉ','d','得','大','dà','to, lớn','Không bật hơi, gần “t” tiếng Việt.'],
+  ['ㄊ','t','特','他','tā','anh ấy','Bật hơi, gần “th” tiếng Việt.'],
+  ['ㄋ','n','訥','你','nǐ','bạn','Như “n” tiếng Việt.'],
+  ['ㄌ','l','勒','老師','lǎoshī','giáo viên','Như “l” tiếng Việt.']]},
+ {g:'Âm cuống lưỡi',note:'Cuống lưỡi nâng lên chạm ngạc mềm.',items:[
+  ['ㄍ','g','哥','狗','gǒu','con chó','Không bật hơi, gần “c/k” tiếng Việt.'],
+  ['ㄎ','k','科','咖啡','kāfēi','cà phê','“k” bật hơi mạnh, không đọc thành “kh”.'],
+  ['ㄏ','h','喝','好','hǎo','tốt','Gần “kh” tiếng Việt, hơi xát ở cuống họng.']]},
+ {g:'Âm mặt lưỡi',note:'Mặt lưỡi áp gần ngạc cứng, miệng dẹt như đang cười. Chỉ đi với ㄧ và ㄩ.',items:[
+  ['ㄐ','j','基','家','jiā','nhà','Không bật hơi, gần “ch” tiếng Việt.'],
+  ['ㄑ','q','欺','去','qù','đi','Như ㄐ nhưng bật hơi mạnh.'],
+  ['ㄒ','x','希','謝謝','xièxie','cảm ơn','Gần “x” tiếng Việt nhưng mặt lưỡi nâng cao, miệng dẹt.']]},
+ {g:'Âm uốn lưỡi',note:'Đầu lưỡi uốn cong lên phía sau lợi. Đây là nhóm khó nhất với người Việt.',items:[
+  ['ㄓ','zh','知','中文','Zhōngwén','tiếng Trung','Uốn lưỡi, không bật hơi, gần “tr” tiếng Việt.'],
+  ['ㄔ','ch','吃','茶','chá','trà','Uốn lưỡi và bật hơi mạnh.'],
+  ['ㄕ','sh','詩','書','shū','sách','Uốn lưỡi, giống “s” đọc nặng của tiếng Việt.'],
+  ['ㄖ','r','日','熱','rè','nóng','Uốn lưỡi như ㄕ nhưng có rung dây thanh, gần “r” nhẹ không rung lưỡi.']]},
+ {g:'Âm đầu lưỡi trước',note:'Đầu lưỡi đặt sát mặt sau răng cửa, lưỡi phẳng, không uốn.',items:[
+  ['ㄗ','z','資','再見','zàijiàn','tạm biệt','Đọc như “ts”, không bật hơi.'],
+  ['ㄘ','c','雌','菜','cài','món ăn','Đọc như “ts” bật hơi mạnh.'],
+  ['ㄙ','s','思','三','sān','số ba','Như “x” tiếng Việt.']]},
+ {g:'Âm giới',note:'Có thể đứng một mình hoặc nằm giữa phụ âm và vần, ví dụ ㄐㄧㄚ = jia.',items:[
+  ['ㄧ','i / yi','衣','一','yī','số một','Như “i” tiếng Việt.'],
+  ['ㄨ','u / wu','屋','五','wǔ','số năm','Như “u” tiếng Việt, tròn môi.'],
+  ['ㄩ','ü / yu','迂','魚','yú','con cá','Giữ môi tròn như “u” nhưng lưỡi đọc “i”.']]},
+ {g:'Vần đơn',note:'',items:[
+  ['ㄚ','a','啊','八','bā','số tám','Như “a”, mở miệng to.'],
+  ['ㄛ','o','喔','我','wǒ','tôi','Gần “ô” hơi chuyển sang “o”, tròn môi.'],
+  ['ㄜ','e','鵝','喝','hē','uống','Gần “ơ” nhưng đặt lưỡi lùi về sau.'],
+  ['ㄝ','ê','耶','姐姐','jiějie','chị gái','Như “ê” tiếng Việt, thường đi sau ㄧ hoặc ㄩ.']]},
+ {g:'Vần kép',note:'',items:[
+  ['ㄞ','ai','哀','愛','ài','yêu','Như “ai”.'],
+  ['ㄟ','ei','欸','杯','bēi','cái cốc','Như “ây”.'],
+  ['ㄠ','ao','凹','包','bāo','cái túi','Như “ao”.'],
+  ['ㄡ','ou','歐','手','shǒu','tay','Như “âu”.']]},
+ {g:'Vần mũi',note:'Chú ý phân biệt âm cuối -n (ㄢ ㄣ) và -ng (ㄤ ㄥ).',items:[
+  ['ㄢ','an','安','看','kàn','xem','Như “an”.'],
+  ['ㄣ','en','恩','人','rén','người','Như “ân”.'],
+  ['ㄤ','ang','骯','忙','máng','bận','Như “ang”.'],
+  ['ㄥ','eng','','冷','lěng','lạnh','Như “âng”.']]},
+ {g:'Vần uốn lưỡi',note:'',items:[
+  ['ㄦ','er','兒','二','èr','số hai','Đọc “ơ” rồi uốn đầu lưỡi lên.']]}];
+const ZALL=ZY.flatMap(g=>g.items.map(it=>({it,g})));
+function zyDetail(it){return `<div class="zdetail"><span class="big zh">${it[0]}</span><div><p><strong>${it[1]}</strong>. ${it[6]}</p><p>Ví dụ: <span class="zh" style="font-size:20px">${it[3]}</span> ${it[4]}, ${it[5]}</p><div class="actions">${it[2]?`<button class="btn sm" onclick="speakSeq(['${it[2]}'])">Nghe âm</button>`:''}<button class="btn sm" onclick="speakSeq(['${it[3]}'])">Nghe ví dụ</button></div></div></div>`}
+function zhuyin(){S={mode:'zy'};
+ const groups=ZY.map((g,gi)=>`<section class="zgroup"><h3>${g.g}</h3>${g.note?`<p class="meta">${g.note}</p>`:'<p class="meta"></p>'}<div class="zgrid">${g.items.map((it,ii)=>`<button class="cell zbtn" onclick="zyTap(${gi},${ii},this)" aria-label="${it[0]} ${it[1]}"><span class="sym zh">${it[0]}</span><span class="p">${it[1]}</span></button>`).join('')}</div><div class="zd" id="zd${gi}" aria-live="polite"></div></section>`).join('');
+ app.innerHTML=`${backPron()}<h2>Bảng chú âm <span class="zh">注音符號</span></h2>
+ <p class="lede">Đài Loan dạy phát âm bằng chú âm ㄅㄆㄇㄈ, tương ứng pinyin b p m f. Gồm 37 ký hiệu: 21 phụ âm, 3 âm giới và 13 vần. Bấm vào từng ô để nghe âm và ví dụ.</p>
+ <p class="note">Các cặp ㄅ/ㄆ, ㄉ/ㄊ, ㄍ/ㄎ, ㄐ/ㄑ, ㄓ/ㄔ, ㄗ/ㄘ chỉ khác nhau ở chỗ có bật hơi hay không, hãy luyện kỹ từng cặp.</p>
+ <div class="actions"><button class="btn primary" onclick="go('zquiz')">Luyện nhận diện chú âm</button></div>${groups}`}
+function zyTap(gi,ii,el){const it=ZY[gi].items[ii];document.querySelectorAll('.zbtn.on').forEach(b=>b.classList.remove('on'));document.querySelectorAll('.zd').forEach(d=>d.innerHTML='');el.classList.add('on');document.getElementById('zd'+gi).innerHTML=zyDetail(it);speakSeq(it[2]?[it[2],it[3]]:[it[3]])}
+function zquiz(){const qs=[];for(let k=0;k<10;k++){const c=ZALL[Math.floor(Math.random()*ZALL.length)];const same=shuffle(c.g.items.filter(x=>x!==c.it));const others=shuffle(ZALL.map(z=>z.it).filter(x=>x!==c.it&&!same.includes(x)));qs.push({it:c.it,opts:shuffle([c.it,...same.slice(0,2),...others].slice(0,4)),ans:null})}S={mode:'zquiz',qs,i:0,score:0};renderZQ()}
+function zSay(it){speakSeq(it[2]?[it[2]]:[it[3]])}
+function renderZQ(){const q=S.qs[S.i];const done=q.ans!==null;const right=q.opts.indexOf(q.it);
+ const opts=q.opts.map((o,n)=>{let c='opt zopt';if(done){if(n===right)c+=' right';else if(q.ans===n)c+=' wrong'}return `<button class="${c}" onclick="zAns(${n})" ${done?'disabled':''}><span class="key">${'ABCD'[n]}</span><span class="txt zh">${o[0]}</span>${done?`<span class="meta">${o[1]}</span>`:''}</button>`}).join('');
+ app.innerHTML=`<button class="link" onclick="go('zhuyin')">Về bảng chú âm</button><h2>Luyện nhận diện chú âm</h2><p class="meta">Câu ${S.i+1}/10. Đúng ${S.score} câu.</p>
+ <div class="listen"><button class="btn primary" onclick="zSay(S.qs[S.i].it)">Nghe</button><span class="meta">Nghe âm và chọn đúng ký hiệu</span></div>
+ <div>${opts}</div>
+ ${done?`<p class="feedback ${q.ans===right?'ok':'no'}">${q.ans===right?'Chính xác.':'Chưa đúng.'}</p>${zyDetail(q.it)}<div class="actions"><button class="btn primary" onclick="zNext()">${S.i<9?'Câu tiếp theo':'Xem kết quả'}</button></div>`:''}`}
+function zAns(n){const q=S.qs[S.i];if(q.ans!==null)return;q.ans=n;if(q.opts[n]===q.it)S.score++;renderZQ()}
+function zNext(){stop();if(S.i<9){S.i++;renderZQ();zSay(S.qs[S.i].it)}
+ else app.innerHTML=`<button class="link" onclick="go('zhuyin')">Về bảng chú âm</button><h2>Kết quả luyện chú âm</h2><div class="score"><div class="cell zh"><span>${S.score}</span></div><p class="verdict">Đúng ${S.score}/10 câu</p></div><div class="actions"><button class="btn primary" onclick="go('zquiz')">Luyện lượt mới</button><button class="btn" onclick="go('zhuyin')">Xem lại bảng chú âm</button></div>`}
+/* Pinyin-first table + generic quiz (dùng chung dữ liệu ZY) */
+const ZY2={g:'Vần ghép',note:'Ghép âm giới i, u, ü với vần, đọc liền một hơi.',items:[
+ ['ㄧㄚ','ia','鴨','家','jiā','nhà','Đọc liền “ia”.'],
+ ['ㄧㄝ','ie','耶','謝謝','xièxie','cảm ơn','Đọc như “iê”.'],
+ ['ㄧㄠ','iao','腰','小','xiǎo','nhỏ','Đọc liền i-ao, gần “iêu” mở miệng to.'],
+ ['ㄧㄡ','iu','優','六','liù','số sáu','Viết iu nhưng đọc đủ là iou, gần “iêu”.'],
+ ['ㄧㄢ','ian','煙','天','tiān','trời, ngày','Viết ian nhưng đọc gần “iên”.'],
+ ['ㄧㄣ','in','因','今天','jīntiān','hôm nay','Như “in”.'],
+ ['ㄧㄤ','iang','央','想','xiǎng','nghĩ, muốn','Đọc liền i-ang.'],
+ ['ㄧㄥ','ing','英','聽','tīng','nghe','Như “inh”.'],
+ ['ㄨㄚ','ua','蛙','花','huā','hoa','Như “oa”.'],
+ ['ㄨㄛ','uo','窩','多','duō','nhiều','Như “uô”.'],
+ ['ㄨㄞ','uai','歪','快','kuài','nhanh','Như “oai”.'],
+ ['ㄨㄟ','ui','威','對','duì','đúng','Viết ui nhưng đọc đủ là uei, gần “uây”.'],
+ ['ㄨㄢ','uan','彎','玩','wán','chơi','Như “oan”.'],
+ ['ㄨㄣ','un','溫','春天','chūntiān','mùa xuân','Viết un nhưng đọc đủ là uen, gần “uân”.'],
+ ['ㄨㄤ','uang','汪','黃','huáng','màu vàng','Như “oang”.'],
+ ['ㄨㄥ','ong','','東','dōng','phía đông','Như “ung”.'],
+ ['ㄩㄝ','üe','約','學','xué','học','Sau j, q, x viết là ue (xue) nhưng vẫn đọc tròn môi.'],
+ ['ㄩㄢ','üan','冤','遠','yuǎn','xa','Tròn môi “ü” rồi đọc “an”, gần “uyên”.'],
+ ['ㄩㄣ','ün','暈','裙子','qúnzi','cái váy','Sau j, q, x viết là un nhưng đọc tròn môi, gần “uyn”.'],
+ ['ㄩㄥ','iong','雍','熊','xióng','con gấu','Đọc liền i-ung.']]};
+const SYS={py:{name:'Bảng pinyin',zh:'漢語拼音',groups:[...ZY,ZY2],view:'pinyin',quiz:'pquiz'},zy:{name:'Bảng chú âm',zh:'注音符號',groups:ZY,view:'zhuyin',quiz:'zquiz'}};
+const pyShort=p=>p.split(' / ')[0];
+const symMain=(it,sys)=>sys==='py'?pyShort(it[1]):it[0];
+const symSub=(it,sys)=>sys==='py'?it[0]:pyShort(it[1]);
+function detail(it,sys){const sub=sys==='py'?`chú âm <span class="zh">${it[0]}</span>`:`pinyin ${it[1]}`;
+ return `<div class="zdetail"><span class="big ${sys==='py'?'pyb':'zh'}">${symMain(it,sys)}</span><div><p><strong>${sys==='py'?it[1]:it[0]}</strong> (${sub}). ${it[6]}</p><p>Ví dụ: <span class="zh" style="font-size:20px">${it[3]}</span> ${it[4]}, ${it[5]}</p><div class="actions">${it[2]?`<button class="btn sm" onclick="speakSeq(['${it[2]}'])">Nghe âm</button>`:''}<button class="btn sm" onclick="speakSeq(['${it[3]}'])">Nghe ví dụ</button></div></div></div>`}
+const PY_RULES=`<section class="band rules"><h2>Quy tắc viết pinyin</h2>
+ <p><strong>y và w.</strong> Khi không có phụ âm đầu, i viết thành yi hoặc y (<span class="zh">一</span> yī, <span class="zh">要</span> yào), u viết thành wu hoặc w (<span class="zh">五</span> wǔ, <span class="zh">我</span> wǒ), ü viết thành yu (<span class="zh">魚</span> yú).</p>
+ <p><strong>Hai chấm của ü.</strong> Sau j, q, x, y thì bỏ hai chấm (<span class="zh">去</span> qù, <span class="zh">學</span> xué) nhưng vẫn đọc tròn môi. Sau n, l thì giữ để phân biệt (<span class="zh">女</span> nǚ, <span class="zh">綠</span> lǜ).</p>
+ <p><strong>Đặt dấu thanh.</strong> Đặt lên nguyên âm theo thứ tự ưu tiên a, o, e, i, u, ü. Riêng iu và ui thì đặt vào chữ đứng sau (<span class="zh">六</span> liù, <span class="zh">對</span> duì).</p>
+ <p><strong>Thanh nhẹ.</strong> Không đánh dấu, đọc nhẹ và ngắn (<span class="zh">媽媽</span> māma, <span class="zh">謝謝</span> xièxie).</p>
+ <p><strong>Chữ i đặc biệt.</strong> Sau z, c, s, zh, ch, sh, r, chữ i không đọc là “i” mà kéo dài âm phụ âm, nghe gần “ư” (<span class="zh">字</span> zì, <span class="zh">是</span> shì).</p>
+ <p><strong>Những chữ dễ đọc nhầm theo tiếng Việt.</strong> q không phải “qu”, x không hoàn toàn là “x”, c đọc là “ts”, z đọc là “ts” không bật hơi, h gần “kh”, ch đọc uốn lưỡi chứ không phải “ch” tiếng Việt.</p></section>`;
+function table(sys){S={mode:'table',sys};const G=SYS[sys].groups;
+ const groups=G.map((g,gi)=>(gi===0?'<h3 class="part">Thanh mẫu (phụ âm đầu)</h3>':gi===6?'<h3 class="part">Vận mẫu (vần)</h3>':'')+`<section class="zgroup"><h3>${g.g}</h3><p class="meta">${g.note||''}</p><div class="zgrid">${g.items.map((it,ii)=>`<button class="cell zbtn ${sys}" onclick="tTap(${gi},${ii},this)" aria-label="${it[1]} ${it[0]}"><span class="sym ${sys==='zy'?'zh':''}">${symMain(it,sys)}</span><span class="p">${symSub(it,sys)}</span></button>`).join('')}</div><div class="zd" id="zd${gi}" aria-live="polite"></div></section>`).join('');
+ const intro=sys==='py'
+  ?`<p class="lede">Pinyin ghi âm tiếng Trung bằng chữ Latin, gồm phụ âm đầu (thanh mẫu), vần (vận mẫu) và thanh điệu. Người Việt học pinyin khá nhanh vì cùng dùng chữ Latin, nhưng nhiều chữ đọc khác tiếng Việt. Bấm vào từng ô để nghe âm, ví dụ và mẹo phát âm.</p><p class="note">Các cặp b/p, d/t, g/k, j/q, zh/ch, z/c chỉ khác nhau ở chỗ có bật hơi hay không. Chữ nhỏ ở góc mỗi ô là chú âm tương ứng.</p>`
+  :`<p class="lede">Đài Loan dạy phát âm bằng chú âm ㄅㄆㄇㄈ, tương ứng pinyin b p m f. Gồm 37 ký hiệu: 21 phụ âm, 3 âm giới và 13 vần. Bấm vào từng ô để nghe âm và ví dụ.</p><p class="note">Các cặp ㄅ/ㄆ, ㄉ/ㄊ, ㄍ/ㄎ, ㄐ/ㄑ, ㄓ/ㄔ, ㄗ/ㄘ chỉ khác nhau ở chỗ có bật hơi hay không.</p>`;
+ const next=sys==='py'
+  ?`<section class="band"><h2>Bước tiếp theo</h2><p>Nắm pinyin rồi thì học 4 thanh điệu, sau đó làm quen chú âm.</p><div class="actions"><button class="btn primary" onclick="go('pron')">Học thanh điệu</button><button class="btn" onclick="go('zhuyin')">Bảng chú âm</button></div></section>`:'';
+ app.innerHTML=`${backPron()}<h2>${SYS[sys].name} <span class="zh">${SYS[sys].zh}</span></h2>${intro}
+ <div class="actions"><button class="btn primary" onclick="go('${SYS[sys].quiz}')">${sys==='py'?'Luyện nghe pinyin':'Luyện nhận diện chú âm'}</button></div>${groups}${sys==='py'?PY_RULES:''}${next}`}
+function tTap(gi,ii,el){const it=SYS[S.sys].groups[gi].items[ii];document.querySelectorAll('.zbtn.on').forEach(b=>b.classList.remove('on'));document.querySelectorAll('.zd').forEach(d=>d.innerHTML='');el.classList.add('on');document.getElementById('zd'+gi).innerHTML=detail(it,S.sys);speakSeq(it[2]?[it[2],it[3]]:[it[3]])}
+function tquiz(sys){const G=SYS[sys].groups;const all=G.flatMap(g=>g.items.map(it=>({it,g})));const qs=[];
+ for(let k=0;k<10;k++){const c=all[Math.floor(Math.random()*all.length)];const same=shuffle(c.g.items.filter(x=>x!==c.it));const others=shuffle(all.map(z=>z.it).filter(x=>x!==c.it&&!same.includes(x)));qs.push({it:c.it,opts:shuffle([c.it,...same.slice(0,2),...others].slice(0,4)),ans:null})}
+ S={mode:'tquiz',sys,qs,i:0,score:0};renderTQz()}
+function renderTQz(){const q=S.qs[S.i];const done=q.ans!==null;const right=q.opts.indexOf(q.it);const sys=S.sys;
+ const opts=q.opts.map((o,n)=>{let c='opt zopt '+sys;if(done){if(n===right)c+=' right';else if(q.ans===n)c+=' wrong'}return `<button class="${c}" onclick="tAns(${n})" ${done?'disabled':''}><span class="key">${'ABCD'[n]}</span><span class="txt ${sys==='zy'?'zh':''}">${symMain(o,sys)}</span>${done?`<span class="meta ${sys==='py'?'zh':''}">${symSub(o,sys)}</span>`:''}</button>`}).join('');
+ app.innerHTML=`<button class="link" onclick="go('${SYS[sys].view}')">Về ${SYS[sys].name.toLowerCase()}</button><h2>${sys==='py'?'Luyện nghe pinyin':'Luyện nhận diện chú âm'}</h2><p class="meta">Câu ${S.i+1}/10. Đúng ${S.score} câu.</p>
+ <div class="listen"><button class="btn primary" onclick="zSay(S.qs[S.i].it)">Nghe</button><span class="meta">Nghe và chọn đúng ${sys==='py'?'pinyin':'ký hiệu'}</span></div>
+ <div>${opts}</div>
+ ${done?`<p class="feedback ${q.ans===right?'ok':'no'}">${q.ans===right?'Chính xác.':'Chưa đúng.'}</p>${detail(q.it,sys)}<div class="actions"><button class="btn primary" onclick="tNext()">${S.i<9?'Câu tiếp theo':'Xem kết quả'}</button></div>`:''}`}
+function tAns(n){const q=S.qs[S.i];if(q.ans!==null)return;q.ans=n;if(q.opts[n]===q.it)S.score++;renderTQz()}
+function tNext(){stop();const sys=S.sys;if(S.i<9){S.i++;renderTQz();zSay(S.qs[S.i].it)}
+ else app.innerHTML=`<button class="link" onclick="go('${SYS[sys].view}')">Về ${SYS[sys].name.toLowerCase()}</button><h2>Kết quả ${sys==='py'?'luyện nghe pinyin':'luyện chú âm'}</h2><div class="score"><div class="cell zh"><span>${S.score}</span></div><p class="verdict">Đúng ${S.score}/10 câu</p></div><div class="actions"><button class="btn primary" onclick="go('${SYS[sys].quiz}')">Luyện lượt mới</button><button class="btn" onclick="go('${SYS[sys].view}')">Xem lại bảng</button></div>`}
+
+/* Actions */
+const F={
+ flip(){S.flip=!S.flip;renderFlash()},
+ fmove(d){S.i=(S.i+d+S.words.length)%S.words.length;S.flip=false;renderFlash()},
+ fshuf(){shuffle(S.words);S.i=0;S.flip=false;renderFlash()},
+ know(){const w=S.words[S.i][0];if(DB.known[w])delete DB.known[w];else DB.known[w]=true;save();renderFlash()},
+ play(k){const q=S.qs[k];if(S.mode==='test'){if(q.plays>=2)return;q.plays++;speakSeq([q.s,'問題：'+q.q]);renderTQ()}
+  else{q.plays++;speakSeq([q.s,'問題：'+q.q]);if(S.mode==='practice')renderPQ()}},
+ pick(oi){const q=S.qs[S.i];if(S.mode==='practice'){if(q.ans!==null)return;q.ans=oi;if(oi===q.a)S.score++;renderPQ()}
+  else if(S.mode==='test'){q.ans=oi;renderTQ()}},
+ pnext(){stop();if(S.i<S.qs.length-1){S.i++;renderPQ();window.scrollTo(0,0)}else pdone()},
+ jump(k){if(k<0||k>=S.qs.length)return;stop();S.i=k;renderTQ();window.scrollTo(0,0)},
+ submit(auto){if(S.mode!=='test')return;const left=S.qs.filter(x=>x.ans===null).length;
+  if(!auto&&left&&!S.warn){S.warn=true;renderTQ();return}
+  clearInterval(S.timer);stop();result();window.scrollTo(0,0)},
+ reset(){DB={known:{},best:{},rate};save();home()}
+};
+const VIEWS={home,flash,practice,test,pron,tone,speak,pinyin:()=>table('py'),pquiz:()=>tquiz('py'),zhuyin:()=>table('zy'),zquiz:()=>tquiz('zy')};
+home();
+</script>
+</body>
+</html>
